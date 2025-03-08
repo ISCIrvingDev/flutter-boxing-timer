@@ -14,7 +14,7 @@ import 'package:flutter_boxing_timer/shared/services/auth/auth.service.dart';
 // * MVVM
 import 'package:provider/provider.dart';
 // import 'package:flutter_boxing_timer/pages/example/example.viewmodels.dart'; // Ejemplo de modulo basico
-import 'package:flutter_boxing_timer/pages/home/home.viewmodels.dart';
+import 'package:flutter_boxing_timer/pages/home/current_timer/current_timer.viewmodels.dart';
 
 void main() {
   // runApp(const MyApp());
@@ -42,7 +42,10 @@ class MyApp extends StatelessWidget {
       title: 'Boxing Timer',
       // theme: appTheme,
       theme: appDarkTheme,
-      home: const HomePage(title: 'Current Set'),
+      home: DefaultTabController(
+        length: 3,
+        child: const HomePage(title: 'Boxing Timer'),
+      ),
     );
   }
 }

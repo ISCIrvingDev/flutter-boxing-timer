@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'home.models.dart';
+import 'current_timer.models.dart';
 
 class UserViewModel extends ChangeNotifier {
   User _user = User(name: "John Doe", age: 25);
