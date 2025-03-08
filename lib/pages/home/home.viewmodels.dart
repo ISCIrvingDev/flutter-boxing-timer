@@ -3,7 +3,6 @@ import 'home.models.dart';
 
 class UserViewModel extends ChangeNotifier {
   User _user = User(name: "John Doe", age: 25);
-
   User get user => _user;
 
   void updateUser(String name, int age) {

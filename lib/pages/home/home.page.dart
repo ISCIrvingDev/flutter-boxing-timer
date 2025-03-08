@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+// * Services
+import 'package:flutter_boxing_timer/shared/services/auth/auth.repository.dart';
+
 // * MVVM
 import 'package:provider/provider.dart';
 import 'package:flutter_boxing_timer/pages/home/home.viewmodels.dart';
@@ -15,6 +18,10 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
+    // * Services
+    final authService = context.read<IAppAuthRepository>();
+
+    // * View Models
     final userViewModel = Provider.of<UserViewModel>(context);
 
     return Scaffold(
@@ -27,6 +34,19 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+            // Auth
+            Text('Log In'),
+            ElevatedButton(
+              style: Theme.of(context).elevatedButtonTheme.style,
+              onPressed: () {
+                authService.isAuthenticated
+                    ? authService.logout()
+                    : authService.login();
+              },
+              child: Text('Auth'),
+            ),
+            SizedBox(height: 20),
+
             // Nombre
             Text('Name', style: Theme.of(context).textTheme.headlineLarge),
             Text(

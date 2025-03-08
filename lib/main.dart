@@ -7,6 +7,10 @@ import 'package:flutter_boxing_timer/shared/theming/dark_theme.dart';
 // * Pages
 import 'package:flutter_boxing_timer/pages/home/home.page.dart';
 
+// * Services
+import 'package:flutter_boxing_timer/shared/services/auth/auth.repository.dart';
+import 'package:flutter_boxing_timer/shared/services/auth/auth.service.dart';
+
 // * MVVM
 import 'package:provider/provider.dart';
 import 'package:flutter_boxing_timer/pages/home/home.viewmodels.dart';
@@ -15,7 +19,13 @@ void main() {
   // runApp(const MyApp());
   runApp(
     MultiProvider(
-      providers: [ChangeNotifierProvider(create: (_) => UserViewModel())],
+      providers: [
+        // Servicios
+        Provider<IAppAuthRepository>(create: (_) => AppAuthService()),
+
+        // ViewModels
+        ChangeNotifierProvider(create: (_) => UserViewModel()),
+      ],
       child: const MyApp(),
     ),
   );
