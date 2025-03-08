@@ -7,18 +7,21 @@ final ThemeData appDarkTheme = ThemeData.dark(useMaterial3: true).copyWith(
   colorScheme: ColorScheme.dark().copyWith(
     primary: Color(0XFFc73d35),
     secondary: Color(0XFF6d7170),
-    // tertiary: Colors.grey,
+    tertiary: Color(0XFFfefcfb),
     // surface: Colors.purple,
     // error: Colors.red,
   ),
 
   // Textos
   textTheme: const TextTheme(
+    // Texto de titulos
     headlineLarge: TextStyle(
       fontSize: 32,
       fontWeight: FontWeight.bold,
       color: Color(0XFFfefcfb),
     ),
+
+    // Texto de parrafos
     bodyLarge: TextStyle(fontSize: 16, color: Color(0XFFfefcfb)),
 
     // Texto de botones
