@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-final ThemeData appDarkTheme = ThemeData.dark().copyWith(
+final ThemeData appDarkTheme = ThemeData.dark(useMaterial3: true).copyWith(
   // Paleta de colores
   primaryColor: Color(0XFF282c2f), // Color principal de la app
   scaffoldBackgroundColor: Color(0XFF282c2f), // Fondo de la app

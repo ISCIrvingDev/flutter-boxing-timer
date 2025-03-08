@@ -1,0 +1,38 @@
+  // Theme de la App
+background: #282c2f
+btn-color-primary: #c73d35
+btn-color-secundary: #6d7170
+text-color: #fefcfb
+circular-progress-indicator-stopped-color: #fc2e36
+circular-progress-indicator-ready-to-go-color: #1de1b8
+circular-progress-indicator-go-color: #ffd657
+
+  // Ref
+* Uso de colores en Flutter
+  ** URL: https://medium.com/@blup-tool/flutter-learning-how-do-i-use-hexadecimal-color-strings-in-flutter-3270622918c9
+  ** Ejemplo:
+const color = Color(0xffb74093); // Replace "b74093" with your hexadecimal color string
+
+* ColorScheme
+  ** URL: https://api.flutter.dev/flutter/material/ColorScheme-class.html
+
+* Theming
+  ** URL: https://www.dhiwise.com/post/painting-your-app-perfectly-with-the-flutter-colorscheme-class
+  ** Ejemplos
+// Creation of a Dark Theme with Flutter
+ThemeData darkTheme = ThemeData.dark().copyWith(
+  colorScheme: ColorScheme.dark().copyWith(
+    primary: Colors.red,
+    secondary: Colors.blue,
+    surface: Colors.amber,
+  ),
+);
+
+// Creation of a Light Theme with Flutter
+ThemeData lightTheme = ThemeData.light().copyWith(
+  colorScheme: ColorScheme.light().copyWith(
+    primary: Colors.orange,
+    secondary: Colors.green,
+    surface: Colors.purple,
+  ),
+);
