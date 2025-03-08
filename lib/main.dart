@@ -13,6 +13,7 @@ import 'package:flutter_boxing_timer/shared/services/auth/auth.service.dart';
 
 // * MVVM
 import 'package:provider/provider.dart';
+// import 'package:flutter_boxing_timer/pages/example/example.viewmodels.dart'; // Ejemplo de modulo basico
 import 'package:flutter_boxing_timer/pages/home/home.viewmodels.dart';
 
 void main() {
@@ -24,6 +25,7 @@ void main() {
         Provider<IAppAuthRepository>(create: (_) => AppAuthService()),
 
         // ViewModels
+        // ChangeNotifierProvider(create: (_) => ExampleViewModel()), // Ejemplo de modulo basico
         ChangeNotifierProvider(create: (_) => UserViewModel()),
       ],
       child: const MyApp(),
