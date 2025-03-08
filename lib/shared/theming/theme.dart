@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// * Nota) Falta implemetar el theme light
 final ThemeData appTheme = ThemeData(
   primaryColor: Colors.blue, // Color principal de la app
   scaffoldBackgroundColor: Colors.grey[200], // Fondo de la app
