@@ -7,6 +7,11 @@ import 'package:flutter_boxing_timer/shared/services/auth/auth.repository.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_boxing_timer/pages/home/home.viewmodels.dart';
 
+// * Widgets
+import 'widgets/break_notice.widget.dart';
+import 'widgets/header_rounds.widget.dart';
+import 'widgets/round_notice.widget.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
   final String title;
@@ -30,50 +35,59 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            // Auth
-            Text('Log In'),
-            ElevatedButton(
-              style: Theme.of(context).elevatedButtonTheme.style,
-              onPressed: () {
-                authService.isAuthenticated
-                    ? authService.logout()
-                    : authService.login();
-              },
-              child: Text('Auth'),
-            ),
-            SizedBox(height: 20),
+      body: SafeArea(
+        child: Container(
+          width: double.infinity,
+          // color: Colors.red,
+          padding: EdgeInsets.all(8),
+          child: Column(
+            children: [
+              // Titulo
+              HeaderRoundsWidget(header: '3 Rounds'),
+              SizedBox(height: 20),
 
-            // Nombre
-            Text('Name', style: Theme.of(context).textTheme.headlineLarge),
-            Text(
-              userViewModel.user.name,
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
+              // Tiempos
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.secondary,
+                    // color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    RoundNoticeWidget(),
+                    SizedBox(height: 20),
+                    Divider(),
+                    SizedBox(height: 20),
+                    BreakNoticeWidget(),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
 
-            // Edad
-            Text('Age', style: Theme.of(context).textTheme.headlineLarge),
-            Text(
-              '${userViewModel.user.age}',
-              style: Theme.of(context).textTheme.bodyLarge,
-            ),
-          ],
+              // Boton para empezar
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  label: Text('Start'),
+                  style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  icon: Icon(
+                    Icons.watch_later_outlined,
+                    color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        tooltip: 'Change Value',
-        shape: Theme.of(context).floatingActionButtonTheme.shape,
-        backgroundColor:
-            Theme.of(context).floatingActionButtonTheme.backgroundColor,
-        foregroundColor:
-            Theme.of(context).floatingActionButtonTheme.foregroundColor,
-        onPressed: () {
-          userViewModel.updateUser('Alice', 30);
-        },
-        child: const Icon(Icons.change_circle_outlined),
       ),
     );
   }
