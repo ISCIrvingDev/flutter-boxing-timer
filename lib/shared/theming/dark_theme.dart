@@ -36,13 +36,13 @@ final ThemeData appDarkTheme = ThemeData.dark(useMaterial3: true).copyWith(
   ),
 
   // Botones
-  // elevatedButtonTheme: ElevatedButtonThemeData(
-  //   style: ElevatedButton.styleFrom(
-  //     backgroundColor: Color(0XFF), // Color del botón
-  //     foregroundColor: Color(0XFF), // Color del texto del botón
-  //     textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-  //   ),
-  // ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      backgroundColor: Color(0XFFfc2e36), // Color del botón
+      foregroundColor: Color(0XFFfefcfb), // Color del texto del botón
+      textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+    ),
+  ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
     backgroundColor: Color(0XFFfc2e36), // Color del botón
     foregroundColor: Color(0XFFfefcfb), // Color del texto del botón
