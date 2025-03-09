@@ -22,8 +22,8 @@ class _HomePageState extends State<HomePage> {
         bottom: TabBar(
           tabs: [
             Tab(icon: Icon(Icons.home), text: 'Presets'),
-            Tab(icon: Icon(Icons.chat_rounded), text: 'Chart'),
-            Tab(icon: Icon(Icons.settings), text: 'Settings'),
+            Tab(icon: Icon(Icons.more_time_rounded), text: 'Timers'),
+            Tab(icon: Icon(Icons.settings_outlined), text: 'Settings'),
           ],
         ),
       ),
@@ -33,11 +33,11 @@ class _HomePageState extends State<HomePage> {
             CurrentTimerTab(),
             Container(
               color: Colors.redAccent,
-              child: const Icon(Icons.chat_rounded),
+              child: const Icon(Icons.more_time_rounded),
             ),
             Container(
               color: Colors.orangeAccent,
-              child: const Icon(Icons.settings),
+              child: const Icon(Icons.settings_outlined),
             ),
           ],
         ),
