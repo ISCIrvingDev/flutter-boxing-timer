@@ -14,7 +14,7 @@ import 'package:flutter_boxing_timer/shared/services/auth/auth.service.dart';
 // * MVVM
 import 'package:provider/provider.dart';
 // import 'package:flutter_boxing_timer/pages/example/example.viewmodels.dart'; // Ejemplo de modulo basico
-import 'package:flutter_boxing_timer/pages/home/current_timer/current_timer.viewmodels.dart';
+import 'package:flutter_boxing_timer/pages/home/tabs/current_timer/current_timer.viewmodels.dart';
 
 void main() {
   // runApp(const MyApp());

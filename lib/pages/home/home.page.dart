@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // * Tabs
-import 'current_timer/current_timer.tab.dart';
+import 'tabs/current_timer/current_timer.tab.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
