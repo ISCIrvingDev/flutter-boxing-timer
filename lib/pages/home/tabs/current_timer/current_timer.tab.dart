@@ -69,7 +69,9 @@ class CurrentTimerTab extends StatelessWidget {
                 Icons.watch_later_outlined,
                 color: Theme.of(context).colorScheme.tertiary,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/timer');
+              },
             ),
           ),
         ],
