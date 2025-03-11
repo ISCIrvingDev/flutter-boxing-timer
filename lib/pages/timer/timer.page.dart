@@ -39,7 +39,17 @@ class TimerPage extends StatelessWidget {
               SizedBox(height: 40),
 
               // Tiempo actual
-              CurrentTimeWidget(currentTime: '02:56'),
+              Container(
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(5)),
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.secondary,
+                    // color: Theme.of(context).colorScheme.tertiary,
+                  ),
+                ),
+                child: CurrentTimeWidget(currentTime: '02:56'),
+              ),
               SizedBox(height: 40),
 
               // Botones
