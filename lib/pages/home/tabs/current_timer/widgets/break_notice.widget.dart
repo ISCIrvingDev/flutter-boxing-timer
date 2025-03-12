@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class BreakNoticeWidget extends StatelessWidget {
-  const BreakNoticeWidget({super.key});
+  final String breakTime;
+  final String breakNoticeTime;
+
+  const BreakNoticeWidget({
+    super.key,
+    required this.breakTime,
+    required this.breakNoticeTime,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,7 @@ class BreakNoticeWidget extends StatelessWidget {
                     // color: Theme.of(context).progressIndicatorTheme.color,
                   ),
                   SizedBox(width: 10),
-                  Text('03:00', style: Theme.of(context).textTheme.bodyLarge),
+                  Text(breakTime, style: Theme.of(context).textTheme.bodyLarge),
                 ],
               ),
             ],
@@ -45,7 +52,10 @@ class BreakNoticeWidget extends StatelessWidget {
                         ).progressIndicatorTheme.circularTrackColor,
                   ),
                   SizedBox(width: 10),
-                  Text('15s', style: Theme.of(context).textTheme.bodyLarge),
+                  Text(
+                    breakNoticeTime,
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
                 ],
               ),
             ],

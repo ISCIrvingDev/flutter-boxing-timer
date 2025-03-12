@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 // * Services
-import 'package:flutter_boxing_timer/shared/services/auth/auth.repository.dart';
+// import 'package:flutter_boxing_timer/shared/services/auth/auth.repository.dart';
+import 'package:flutter_boxing_timer/shared/services/timer/timer.repository.dart';
+import 'package:flutter_boxing_timer/shared/services/timer/timer.service.dart';
+
+// * DTOs
+import 'package:flutter_boxing_timer/shared/services/timer/timer.dto.dart';
 
 // * MVVM
 import 'package:provider/provider.dart';
@@ -12,13 +17,36 @@ import 'widgets/break_notice.widget.dart';
 import 'widgets/header_rounds.widget.dart';
 import 'widgets/round_notice.widget.dart';
 
-class CurrentTimerTab extends StatelessWidget {
+class CurrentTimerTab extends StatefulWidget {
   const CurrentTimerTab({super.key});
+
+  @override
+  State<CurrentTimerTab> createState() => _CurrentTimerTabState();
+}
+
+class _CurrentTimerTabState extends State<CurrentTimerTab> {
+  CurrentTimerDto timerDto = defaultCurrentTimerDto;
+
+  Future<void> onInit() async {
+    timerDto = await AppTimerService().getCurrentTimer();
+  }
+
+  @override
+  initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      onInit();
+
+      // setState(() {});
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     // * Services
-    final authService = context.read<IAppAuthRepository>();
+    // final authService = context.read<IAppAuthRepository>();
+    final timerService = context.read<IAppTimerRepository>();
 
     // * View Models
     final userViewModel = Provider.of<UserViewModel>(context);
@@ -30,7 +58,7 @@ class CurrentTimerTab extends StatelessWidget {
       child: Column(
         children: [
           // Titulo
-          HeaderRoundsWidget(header: '3 Rounds'),
+          HeaderRoundsWidget(header: '${timerDto.totalRounds} Rounds'),
           SizedBox(height: 20),
 
           // Tiempos
@@ -45,11 +73,11 @@ class CurrentTimerTab extends StatelessWidget {
             ),
             child: Column(
               children: [
-                RoundNoticeWidget(),
+                RoundNoticeWidget(roundTime: '03:00', roundNoticeTime: '15s'),
                 SizedBox(height: 20),
                 Divider(),
                 SizedBox(height: 20),
-                BreakNoticeWidget(),
+                BreakNoticeWidget(breakTime: '03:00', breakNoticeTime: '15s'),
               ],
             ),
           ),

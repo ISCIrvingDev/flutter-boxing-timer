@@ -9,8 +9,10 @@ import 'package:flutter_boxing_timer/pages/home/home.page.dart';
 import 'package:flutter_boxing_timer/pages/timer/timer.page.dart';
 
 // * Services
-import 'package:flutter_boxing_timer/shared/services/auth/auth.repository.dart';
-import 'package:flutter_boxing_timer/shared/services/auth/auth.service.dart';
+// import 'package:flutter_boxing_timer/shared/services/auth/auth.repository.dart';
+// import 'package:flutter_boxing_timer/shared/services/auth/auth.service.dart';
+import 'package:flutter_boxing_timer/shared/services/timer/timer.repository.dart';
+import 'package:flutter_boxing_timer/shared/services/timer/timer.service.dart';
 
 // * MVVM
 import 'package:provider/provider.dart';
@@ -23,7 +25,8 @@ void main() {
     MultiProvider(
       providers: [
         // Servicios
-        Provider<IAppAuthRepository>(create: (_) => AppAuthService()),
+        // Provider<IAppAuthRepository>(create: (_) => AppAuthService()),
+        Provider<IAppTimerRepository>(create: (_) => AppTimerService()),
 
         // ViewModels
         // ChangeNotifierProvider(create: (_) => ExampleViewModel()), // Ejemplo de modulo basico
