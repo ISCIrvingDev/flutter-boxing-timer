@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 
+// * DTOs
+import 'package:flutter_boxing_timer/shared/services/timer/dtos/current_timer.dto.dart';
+
+// * MVVM
+import 'package:provider/provider.dart';
+import 'timer.viewmodels.dart';
+
 // * Widgets
 import 'widgets/current_round.widget.dart';
 import 'widgets/current_time.widget.dart';
@@ -14,6 +21,14 @@ class TimerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final arguments =
+        (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{})
+            as Map;
+    CurrentTimerDto timerDto = arguments['timerDto'];
+    print(timerDto);
+
+    final timerViewModel = Provider.of<TimerViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -26,15 +41,18 @@ class TimerPage extends StatelessWidget {
           padding: EdgeInsets.all(8),
           child: Column(
             children: [
+              // Text('ID: $idTimer'),
               // Titulo
-              CurrentRoundWidget(currentRound: 1),
+              CurrentRoundWidget(
+                currentRound: timerViewModel.timerModel.currentRound,
+              ),
               SizedBox(height: 20),
 
               // # de rounds
               TotalRoundsWidget(
-                totalRounds: 3,
-                roundMinutes: '03:00',
-                breakMinutes: '01:00',
+                totalRounds: timerDto.totalRounds,
+                roundMinutes: timerDto.roundTime,
+                breakMinutes: timerDto.breakTime,
               ),
               SizedBox(height: 40),
 
@@ -48,7 +66,9 @@ class TimerPage extends StatelessWidget {
                     // color: Theme.of(context).colorScheme.tertiary,
                   ),
                 ),
-                child: CurrentTimeWidget(currentTime: '02:56'),
+                child: CurrentTimeWidget(
+                  currentTime: timerViewModel.timerModel.currentTime,
+                ),
               ),
               SizedBox(height: 40),
 
@@ -58,9 +78,9 @@ class TimerPage extends StatelessWidget {
 
               // Tiempo restante
               RemainingTimeWidget(
-                elapsedTime: '00:19',
-                pendingTime: '11:01',
-                totalTime: '11:20',
+                elapsedTime: timerViewModel.timerModel.elapsedTime,
+                pendingTime: timerViewModel.timerModel.pendingTime,
+                totalTime: timerViewModel.timerModel.totalTime,
               ),
             ],
           ),

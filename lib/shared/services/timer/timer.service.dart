@@ -2,7 +2,7 @@
 import 'timer.repository.dart';
 
 // * DTOs
-import 'package:flutter_boxing_timer/shared/services/timer/timer.dto.dart';
+import 'package:flutter_boxing_timer/shared/services/timer/dtos/current_timer.dto.dart';
 
 // * Storage
 import 'package:shared_preferences/shared_preferences.dart';

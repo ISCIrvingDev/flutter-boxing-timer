@@ -6,7 +6,7 @@ import 'package:flutter_boxing_timer/shared/services/timer/timer.repository.dart
 import 'package:flutter_boxing_timer/shared/services/timer/timer.service.dart';
 
 // * DTOs
-import 'package:flutter_boxing_timer/shared/services/timer/timer.dto.dart';
+import 'package:flutter_boxing_timer/shared/services/timer/dtos/current_timer.dto.dart';
 
 // * MVVM
 import 'package:provider/provider.dart';
@@ -98,7 +98,11 @@ class _CurrentTimerTabState extends State<CurrentTimerTab> {
                 color: Theme.of(context).colorScheme.tertiary,
               ),
               onPressed: () {
-                Navigator.pushNamed(context, '/timer');
+                Navigator.pushNamed(
+                  context,
+                  '/timer',
+                  arguments: {'timerDto': timerDto},
+                );
               },
             ),
           ),

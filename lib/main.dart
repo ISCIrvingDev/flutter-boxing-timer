@@ -18,6 +18,7 @@ import 'package:flutter_boxing_timer/shared/services/timer/timer.service.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_boxing_timer/pages/example/example.viewmodels.dart'; // Ejemplo de modulo basico
 import 'package:flutter_boxing_timer/pages/home/tabs/current_timer/current_timer.viewmodels.dart';
+import 'package:flutter_boxing_timer/pages/timer/timer.viewmodels.dart';
 
 void main() {
   // runApp(const MyApp());
@@ -31,6 +32,7 @@ void main() {
         // ViewModels
         // ChangeNotifierProvider(create: (_) => ExampleViewModel()), // Ejemplo de modulo basico
         ChangeNotifierProvider(create: (_) => UserViewModel()),
+        ChangeNotifierProvider(create: (_) => TimerViewModel()),
       ],
       child: const MyApp(),
     ),
