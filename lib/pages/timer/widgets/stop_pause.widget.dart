@@ -38,7 +38,9 @@ class StopPauseWidget extends StatelessWidget {
             color: Theme.of(context).colorScheme.tertiary,
             size: 22,
           ),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ],
     );
