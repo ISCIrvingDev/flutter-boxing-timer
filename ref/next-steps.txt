@@ -1,0 +1,43 @@
+1) Darle funcionalidad al "CurrentTimerTab"
+✔ * Definicion:
+  ** Trae la info actual del timer seleccionado en "TimersTab"
+  ** Al darle click a "Start" redirige a la vista de "Timer"
+✔ * Maquetacion
+✔ * Funcionalidad
+* Crear la vista de "Timer"
+  ✔ ** Maquetacion
+  ** Funcionalidad
+    *** Que debe pasar
+✔ * El boton "Stop" te regresa a la pantalla "CurrentTimerTab" (la pantalla anterior)
+// Inicio del ciclo
+* Se muestra el tiempo del "roundNoticeTime" disminuyendo un numero por cada segundo que pasa
+  ** https://dartpad.dev/
+  ** https://api.dart.dev/dart-core/Duration-class.html
+  ** https://api.flutter.dev/flutter/dart-core/Stopwatch-class.html
+* Una vez que el "roundNoticeTime" llega a 0:
+  ** Debe sonar una campana
+    *** https://stackoverflow.com/questions/43813386/how-to-play-a-custom-sound-in-flutter
+  ** Se muestra el tiempo del "roundTime" disminuyendo un numero por cada segundo que pasa
+* Una vez que el "roundTime" llega a 0:
+  ** Debe sonar una campana
+  ** Se muestra el tiempo del "breakTime" disminuyendo un numero por cada segundo que pasa
+* Una vez que el "breakTime" llega a 0:
+  ** Volver a empezar el ciclo hasta que el numero total de rounds sea igual a "totalRounds"
+// Fin del ciclo
+* El boton "Pause" pausa el cronometro y cambia de texto a "Resume"
+  ** Cuando se vuelve a presionar el boton, vuelve a cambiar de texto a "Pause" y reanuda el cronometro
+
+2) Crear la vista de "SettingsTab"
+✔ * Definicion:
+  ** Es la vista que se encarga de cambiar las configuraciones del Timer actual
+  ** Guarda la info del timer actual
+  ** No lo guarda en la lista de "Timers", a no ser que el usuario lo especifique
+* Maquetacion
+* Funcionalidad
+
+3) Crear la vista de "TimersTab"
+✔ * Definicion:
+  ** Es el CRUD de los "Timers"
+  ** Usar un modal para crear nuevos Timers
+* Maquetacion
+* Funcionalidad

@@ -14,6 +14,9 @@ import 'package:flutter_boxing_timer/pages/timer/timer.page.dart';
 import 'package:flutter_boxing_timer/shared/services/timer/timer.repository.dart';
 import 'package:flutter_boxing_timer/shared/services/timer/timer.service.dart';
 
+// * Utils
+import 'package:flutter_boxing_timer/shared/utils/duration_formats.util.dart';
+
 // * MVVM
 import 'package:provider/provider.dart';
 // import 'package:flutter_boxing_timer/pages/example/example.viewmodels.dart'; // Ejemplo de modulo basico
@@ -25,14 +28,18 @@ void main() {
   runApp(
     MultiProvider(
       providers: [
-        // Servicios
+        // * Servicios
         // Provider<IAppAuthRepository>(create: (_) => AppAuthService()),
         Provider<IAppTimerRepository>(create: (_) => AppTimerService()),
 
-        // ViewModels
+        // * Utils
+        Provider<DurationFormatsUtil>(create: (_) => DurationFormatsUtil()),
+
+        // * ViewModels
         // ChangeNotifierProvider(create: (_) => ExampleViewModel()), // Ejemplo de modulo basico
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => TimerViewModel()),
+        ChangeNotifierProvider(create: (_) => TimerViewModel2()),
       ],
       child: const MyApp(),
     ),

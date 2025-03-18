@@ -1,0 +1,14 @@
+  // CurrentTimerDto
+id: ID del DTO
+totalRounds: Numero total de rounds
+roundTime: Tiempo de cada round
+roundNoticeTime: Tiempo de notificacion antes de que se acabe cada round
+breakTime: Tiempo de cada descanso
+breakNoticeTime: Tiempo de notificacion antes de que se acabe cada descanso
+
+// TimerModel
+currentRound: Round actual en el que esta el Timer
+currentTime: Tiempo actual que se muestra en la pantalla, ya sea el tiempo del round, el de descanso, o el tiempo previo a que inicie el entreno
+elapsedTime: Tiempo transcurrido dentro del "tiempo total"
+pendingTime: Tiempo pendiente para que se termine el entreno
+totalTime: Tiempo total de entrenamiento entre el tiempo de entreno, el tiempo de descanso y el tiempo previo a que inicie el entreno

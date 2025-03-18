@@ -1,1 +1,3 @@
-class TimerService {}
+class TimerService {
+  final stopwatch = Stopwatch();
+}
