@@ -18,6 +18,12 @@
 * Una vez que el "roundNoticeTime" llega a 0:
   ** Debe sonar una campana
     *** https://stackoverflow.com/questions/43813386/how-to-play-a-custom-sound-in-flutter
+    *** https://pub.dev/packages/audioplayers
+      **** https://github.com/bluefireteam/audioplayers
+    *** Widget Wisdom - How to play audio in flutter? | Audio File From Asset
+      **** https://www.youtube.com/watch?v=OHVKzKc5NgI
+    *** https://widgetwisdom.com/how-to-play-a-custom-sound-in-flutter/
+    *** https://chatgpt.com/c/67f454a5-beac-800a-bba4-e675f0eac7fe
   ** Se muestra el tiempo del "roundTime" disminuyendo un numero por cada segundo que pasa
 * Una vez que el "roundTime" llega a 0:
   ** Debe sonar una campana

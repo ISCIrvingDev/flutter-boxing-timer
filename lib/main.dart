@@ -13,6 +13,8 @@ import 'package:flutter_boxing_timer/pages/timer/timer.page.dart';
 // import 'package:flutter_boxing_timer/shared/services/auth/auth.service.dart';
 import 'package:flutter_boxing_timer/shared/services/timer/timer.repository.dart';
 import 'package:flutter_boxing_timer/shared/services/timer/timer.service.dart';
+import 'package:flutter_boxing_timer/shared/services/player/player.repository.dart';
+import 'package:flutter_boxing_timer/shared/services/player/player.service.dart';
 
 // * Utils
 import 'package:flutter_boxing_timer/shared/utils/duration_formats.util.dart';
@@ -32,6 +34,8 @@ void main() {
         // * Servicios
         // Provider<IAppAuthRepository>(create: (_) => AppAuthService()),
         Provider<IAppTimerRepository>(create: (_) => AppTimerService()),
+        Provider<IAppPlayerRepository>(create: (_) => AppPlayerService()),
+        // Provider<AppPlayerService>(create: (_) => AppPlayerService()),
 
         // * Utils
         Provider<DurationFormatsUtil>(create: (_) => DurationFormatsUtil()),
@@ -40,7 +44,19 @@ void main() {
         // ChangeNotifierProvider(create: (_) => ExampleViewModel()), // Ejemplo de modulo basico
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => RoundTimerViewModel()),
-        ChangeNotifierProvider(create: (_) => RoundNoticeTimer()),
+        // ChangeNotifierProvider(create: (_) => RoundNoticeTimerViewModel()),
+        ChangeNotifierProxyProvider<
+          IAppPlayerRepository,
+          RoundNoticeTimerViewModel
+        >(
+          create:
+              (context) => RoundNoticeTimerViewModel(
+                appPlayerService: context.read<IAppPlayerRepository>(),
+              ),
+          update:
+              (context, appPlayerService, previous) =>
+                  RoundNoticeTimerViewModel(appPlayerService: appPlayerService),
+        ),
         // ChangeNotifierProvider(create: (_) => TimerViewModel2()),
       ],
       child: const MyApp(),

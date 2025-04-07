@@ -9,6 +9,9 @@ import 'package:flutter_boxing_timer/shared/services/timer/dtos/current_timer.dt
 // * Repositories
 import 'view_models/timer.repository.dart';
 
+// * Services
+import 'package:flutter_boxing_timer/shared/services/player/player.repository.dart';
+
 // * MVVM
 import 'package:provider/provider.dart';
 import 'timer.models.dart';
@@ -37,9 +40,8 @@ class _TimerPageState extends State<TimerPage> {
   late CurrentTimerDto timerDto;
   late RoundTimerViewModel roundTimerViewModel =
       Provider.of<RoundTimerViewModel>(context);
-  late RoundNoticeTimer roundNoticeTimer = Provider.of<RoundNoticeTimer>(
-    context,
-  );
+  // late RoundNoticeTimerViewModel roundNoticeTimer =
+  //     Provider.of<RoundNoticeTimerViewModel>(context);
 
   @override
   void initState() {
@@ -48,6 +50,10 @@ class _TimerPageState extends State<TimerPage> {
           // ignore: use_build_context_synchronously
           (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{})
               as Map;
+
+      // * Services
+      // ignore: use_build_context_synchronously
+      final playerService = context.read<IAppPlayerRepository>();
 
       timerDto = arguments['timerDto'];
 
@@ -62,8 +68,16 @@ class _TimerPageState extends State<TimerPage> {
         digitMinutes: '00',
       );
 
-      roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
-      roundNoticeTimer.start();
+      // roundNoticeTimer.setServices(playerService);
+      // roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
+      // roundNoticeTimer.start();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        RoundNoticeTimerViewModel roundNoticeTimer =
+            Provider.of<RoundNoticeTimerViewModel>(context, listen: false);
+
+        roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
+        roundNoticeTimer.start();
+      });
 
       // Round Timer
       int localSeconds = int.tryParse(timerDto.roundTime.substring(3, 5)) ?? 0;
@@ -85,6 +99,9 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Puedes usar watch() para que la UI se reconstruya al notificar cambios
+    final roundNoticeTimer = context.watch<RoundNoticeTimerViewModel>();
+
     ITimerRepository timerViewModel =
         roundTimerViewModel.started ? roundTimerViewModel : roundNoticeTimer;
 
