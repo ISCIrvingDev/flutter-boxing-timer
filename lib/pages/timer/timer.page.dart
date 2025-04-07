@@ -9,9 +9,6 @@ import 'package:flutter_boxing_timer/shared/services/timer/dtos/current_timer.dt
 // * Repositories
 import 'view_models/timer.repository.dart';
 
-// * Services
-import 'package:flutter_boxing_timer/shared/services/player/player.repository.dart';
-
 // * MVVM
 import 'package:provider/provider.dart';
 import 'timer.models.dart';
@@ -51,10 +48,6 @@ class _TimerPageState extends State<TimerPage> {
           (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{})
               as Map;
 
-      // * Services
-      // ignore: use_build_context_synchronously
-      final playerService = context.read<IAppPlayerRepository>();
-
       timerDto = arguments['timerDto'];
 
       // Round Notice Timer
@@ -68,9 +61,6 @@ class _TimerPageState extends State<TimerPage> {
         digitMinutes: '00',
       );
 
-      // roundNoticeTimer.setServices(playerService);
-      // roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
-      // roundNoticeTimer.start();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         RoundNoticeTimerViewModel roundNoticeTimer =
             Provider.of<RoundNoticeTimerViewModel>(context, listen: false);
@@ -99,7 +89,7 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Puedes usar watch() para que la UI se reconstruya al notificar cambios
+    // Se usa "watch()" para que la UI se reconstruya al notificar cambios ya que el "Provider.of<RoundNoticeTimerViewModel>" esta con "listen: false"
     final roundNoticeTimer = context.watch<RoundNoticeTimerViewModel>();
 
     ITimerRepository timerViewModel =

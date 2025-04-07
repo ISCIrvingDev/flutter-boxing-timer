@@ -35,7 +35,6 @@ void main() {
         // Provider<IAppAuthRepository>(create: (_) => AppAuthService()),
         Provider<IAppTimerRepository>(create: (_) => AppTimerService()),
         Provider<IAppPlayerRepository>(create: (_) => AppPlayerService()),
-        // Provider<AppPlayerService>(create: (_) => AppPlayerService()),
 
         // * Utils
         Provider<DurationFormatsUtil>(create: (_) => DurationFormatsUtil()),
@@ -44,8 +43,9 @@ void main() {
         // ChangeNotifierProvider(create: (_) => ExampleViewModel()), // Ejemplo de modulo basico
         ChangeNotifierProvider(create: (_) => UserViewModel()),
         ChangeNotifierProvider(create: (_) => RoundTimerViewModel()),
-        // ChangeNotifierProvider(create: (_) => RoundNoticeTimerViewModel()),
+        // ChangeNotifierProvider(create: (_) => RoundNoticeTimerViewModel()), // Inyeccion del ViewModel "RoundNoticeTimerViewModel"
         ChangeNotifierProxyProvider<
+          // Inyeccion del ViewModel "RoundNoticeTimerViewModel" con el "AppPlayerService" por medio de "IAppPlayerRepository"
           IAppPlayerRepository,
           RoundNoticeTimerViewModel
         >(
@@ -57,7 +57,6 @@ void main() {
               (context, appPlayerService, previous) =>
                   RoundNoticeTimerViewModel(appPlayerService: appPlayerService),
         ),
-        // ChangeNotifierProvider(create: (_) => TimerViewModel2()),
       ],
       child: const MyApp(),
     ),

@@ -32,10 +32,6 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
   @override
   bool get started => _started;
 
-  // void setServices(IAppPlayerRepository appPlayerService) {
-  //   this.appPlayerService = appPlayerService;
-  // }
-
   @override
   void setTimerModel(TimerModel newVal) {
     _timerModel = newVal;
