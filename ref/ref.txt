@@ -1,0 +1,16 @@
+  // Que cambia
+* El round actual -> currentRound
+* El tiempo actual (el cronometro) -> currentTime
+* El botón de Pause/Resume
+* Los tiempos:
+  ** Transcurrido -> elapsedTime
+  ** Pendiente -> pendingTime
+------------------------------------------------------------
+  // Aqui me quede
+✔ * TimerPage ya muestra los datos que se obtienen del DTO
+* Tenemos que tener 2 medidas, una para el timepo en si (de tipo int -> 0) y otra para lo que se le va a mostrar al usuario (de tipo string -> "00:00")
+  ** El tipo int es el que maneja la logica
+  ** El tipo string es un wrapper para el tipo int para que tenga una mejor presentacion para el usuario
+  ** Como ambos cambian, ambos son parte de la capa del "Presentation" (el ViewModel)
+* Tengo que formatear los datos de entrada para que encajen en el esquema anterior
+* Luego empiezo a darle funcionalidad al reloj

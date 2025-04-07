@@ -4,12 +4,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_boxing_timer/shared/services/timer/dtos/current_timer.dto.dart';
 
 // * Utils
-import 'package:flutter_boxing_timer/shared/utils/duration_formats.util.dart';
+// import 'package:flutter_boxing_timer/shared/utils/duration_formats.util.dart';
+
+// * Repositories
+import 'view_models/timer.repository.dart';
 
 // * MVVM
 import 'package:provider/provider.dart';
 import 'timer.models.dart';
-import 'timer.viewmodels.dart';
+import 'view_models/round_timer.viewmodel.dart';
+import 'package:flutter_boxing_timer/pages/timer/view_models/round_notice_timer.viewmodel.dart';
 
 // * Widgets
 import 'widgets/current_round.widget.dart';
@@ -29,9 +33,13 @@ class TimerPage extends StatefulWidget {
 
 class _TimerPageState extends State<TimerPage> {
   late Map arguments;
-  late DurationFormatsUtil durationFormatsUtil;
+  // late DurationFormatsUtil durationFormatsUtil;
   late CurrentTimerDto timerDto;
-  late TimerViewModel timerViewModel = Provider.of<TimerViewModel>(context);
+  late RoundTimerViewModel roundTimerViewModel =
+      Provider.of<RoundTimerViewModel>(context);
+  late RoundNoticeTimer roundNoticeTimer = Provider.of<RoundNoticeTimer>(
+    context,
+  );
 
   @override
   void initState() {
@@ -41,40 +49,35 @@ class _TimerPageState extends State<TimerPage> {
           (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{})
               as Map;
 
-      // ignore: use_build_context_synchronously
-      durationFormatsUtil = context.read<DurationFormatsUtil>();
-
       timerDto = arguments['timerDto'];
 
-      print(timerDto);
+      // Round Notice Timer
+      int roundNoticeTimerLocalSeconds =
+          int.tryParse(timerDto.roundNoticeTime.substring(0, 2)) ?? 0;
 
-      var timerModel = TimerModel(
-        currentRound: 1,
-        totalRounds: timerDto.totalRounds,
-        roundTime: timerDto.roundTime,
-        breakTime: timerDto.breakTime,
-        currentTime: durationFormatsUtil.formatSecondsStringTime(
-          timerDto.roundNoticeTime,
-        ),
-        elapsedTime: '00:00',
-        pendingTime: '11:01',
-        totalTime: '11:20',
+      var roundNoticeTimerModel = TimerModel(
+        seconds: roundNoticeTimerLocalSeconds,
+        minutes: 0,
+        digitSeconds: roundNoticeTimerLocalSeconds.toString().padLeft(2, '0'),
+        digitMinutes: '00',
       );
 
-      // ignore: use_build_context_synchronously
-      timerViewModel = Provider.of<TimerViewModel>(context);
+      roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
+      roundNoticeTimer.start();
 
-      // Provider.of<TimerViewModel>(
-      //   // ignore: use_build_context_synchronously
-      //   context,
-      //   listen: false,
-      // ).setTimerModel(timerModel);
-      timerViewModel.setTimerModel(timerModel);
+      // Round Timer
+      int localSeconds = int.tryParse(timerDto.roundTime.substring(3, 5)) ?? 0;
+      int localMinutes = int.tryParse(timerDto.roundTime.substring(0, 2)) ?? 0;
 
-      // Timer
-      var stopwatch = Stopwatch();
+      var roundTimerModel = TimerModel(
+        seconds: localSeconds,
+        minutes: localMinutes,
+        digitSeconds: localSeconds.toString().padLeft(2, '0'),
+        digitMinutes: localMinutes.toString().padLeft(2, '0'),
+      );
 
-      stopwatch.start();
+      roundTimerViewModel.setTimerModel(roundTimerModel);
+      roundTimerViewModel.start();
     });
 
     super.initState();
@@ -82,12 +85,8 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
-    // final arguments =
-    //     (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{})
-    //         as Map;
-    // CurrentTimerDto timerDto = arguments['timerDto'];
-
-    // final timerViewModel = Provider.of<TimerViewModel>(context);
+    ITimerRepository timerViewModel =
+        roundTimerViewModel.started ? roundTimerViewModel : roundNoticeTimer;
 
     return Scaffold(
       appBar: AppBar(
@@ -103,15 +102,19 @@ class _TimerPageState extends State<TimerPage> {
             children: [
               // Titulo
               CurrentRoundWidget(
-                currentRound: timerViewModel.timerModel.currentRound,
+                // currentRound: timerViewModel.timerModel.currentRound,
+                currentRound: 6,
               ),
               SizedBox(height: 20),
 
               // # de rounds
               TotalRoundsWidget(
-                totalRounds: timerViewModel.timerModel.totalRounds,
-                roundMinutes: timerViewModel.timerModel.roundTime,
-                breakMinutes: timerViewModel.timerModel.breakTime,
+                // totalRounds: timerViewModel.timerModel.totalRounds,
+                // roundMinutes: timerViewModel.timerModel.roundTime,
+                // breakMinutes: timerViewModel.timerModel.breakTime,
+                totalRounds: 12, // timerDto.totalRounds,
+                roundMinutes: '04:00', //timerDto.roundTime,
+                breakMinutes: '00:50', //timerDto.breakTime,
               ),
               SizedBox(height: 40),
 
@@ -126,20 +129,24 @@ class _TimerPageState extends State<TimerPage> {
                   ),
                 ),
                 child: CurrentTimeWidget(
-                  currentTime: timerViewModel.timerModel.currentTime,
+                  // currentTime: timerViewModel.timerModel.currentTime,
+                  currentTime: '${timerViewModel.timerModel.digitSeconds}s',
                 ),
               ),
               SizedBox(height: 40),
 
               // Botones
-              StopPauseWidget(),
+              StopPauseWidget(timerViewModel: timerViewModel),
               SizedBox(height: 40),
 
               // Tiempo restante
               RemainingTimeWidget(
-                elapsedTime: timerViewModel.timerModel.elapsedTime,
-                pendingTime: timerViewModel.timerModel.pendingTime,
-                totalTime: timerViewModel.timerModel.totalTime,
+                // elapsedTime: timerViewModel.timerModel.elapsedTime,
+                // pendingTime: timerViewModel.timerModel.pendingTime,
+                elapsedTime: '111',
+                pendingTime: '222',
+                // totalTime: timerViewModel.timerModel.totalTime,
+                totalTime: '12:00',
               ),
             ],
           ),

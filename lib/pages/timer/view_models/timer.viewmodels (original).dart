@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 // * Models
-import 'timer.models.dart';
+import '../timer.models.dart';
 
 class TimerViewModel extends ChangeNotifier {
   // Valor por defecto del TimerModel

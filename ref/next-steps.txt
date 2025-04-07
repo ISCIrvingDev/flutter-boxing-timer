@@ -4,13 +4,14 @@
   ** Al darle click a "Start" redirige a la vista de "Timer"
 ✔ * Maquetacion
 ✔ * Funcionalidad
-* Crear la vista de "Timer"
+
+2) Crear la vista de "Timer"
   ✔ ** Maquetacion
   ** Funcionalidad
     *** Que debe pasar
 ✔ * El boton "Stop" te regresa a la pantalla "CurrentTimerTab" (la pantalla anterior)
 // Inicio del ciclo
-* Se muestra el tiempo del "roundNoticeTime" disminuyendo un numero por cada segundo que pasa
+✔ * Se muestra el tiempo del "roundNoticeTime" disminuyendo un numero por cada segundo que pasa
   ** https://dartpad.dev/
   ** https://api.dart.dev/dart-core/Duration-class.html
   ** https://api.flutter.dev/flutter/dart-core/Stopwatch-class.html
@@ -27,7 +28,7 @@
 * El boton "Pause" pausa el cronometro y cambia de texto a "Resume"
   ** Cuando se vuelve a presionar el boton, vuelve a cambiar de texto a "Pause" y reanuda el cronometro
 
-2) Crear la vista de "SettingsTab"
+3) Crear la vista de "SettingsTab"
 ✔ * Definicion:
   ** Es la vista que se encarga de cambiar las configuraciones del Timer actual
   ** Guarda la info del timer actual
@@ -35,7 +36,7 @@
 * Maquetacion
 * Funcionalidad
 
-3) Crear la vista de "TimersTab"
+4) Crear la vista de "TimersTab"
 ✔ * Definicion:
   ** Es el CRUD de los "Timers"
   ** Usar un modal para crear nuevos Timers
