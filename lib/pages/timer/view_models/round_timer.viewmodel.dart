@@ -5,17 +5,24 @@ import 'package:flutter/material.dart';
 // * Repositories
 import 'timer.repository.dart';
 
+// * Services
+import 'package:flutter_boxing_timer/shared/services/player/player.repository.dart';
+
 // * Models
 import '../timer.models.dart';
 
 class RoundTimerViewModel extends ChangeNotifier implements ITimerRepository {
+  final IAppPlayerRepository appPlayerService;
+
   TimerModel _timerModel = TimerModel(
     seconds: 0,
     minutes: 0,
-    digitSeconds: '00',
-    digitMinutes: '00',
+    digitSeconds: '',
+    digitMinutes: '',
   );
+
   bool _started = false;
+
   Timer? _timer;
 
   @override
@@ -23,6 +30,8 @@ class RoundTimerViewModel extends ChangeNotifier implements ITimerRepository {
 
   @override
   bool get started => _started;
+
+  RoundTimerViewModel({required this.appPlayerService});
 
   @override
   void setTimerModel(TimerModel newVal) {
@@ -63,14 +72,11 @@ class RoundTimerViewModel extends ChangeNotifier implements ITimerRepository {
       int localSeconds = _timerModel.seconds - 1;
       int localMinutes = _timerModel.minutes;
 
-      if (localSeconds > 59) {
-        if (localMinutes > 59) {
-          localMinutes = 0;
-        } else {
-          localMinutes--;
-          localSeconds = 0;
-        }
-      } else if (localSeconds < 1) {
+      if (localMinutes > 0 && localSeconds < 1) {
+        localMinutes--;
+        localSeconds = 59;
+      } else if (localMinutes < 1 && localSeconds < 1) {
+        appPlayerService.play();
         stop();
       }
 

@@ -15,8 +15,8 @@
   ** https://dartpad.dev/
   ** https://api.dart.dev/dart-core/Duration-class.html
   ** https://api.flutter.dev/flutter/dart-core/Stopwatch-class.html
-* Una vez que el "roundNoticeTime" llega a 0:
-  ** Debe sonar una campana
+✔ * Una vez que el "roundNoticeTime" llega a 0:
+  ✔ ** Debe sonar una campana
     *** https://stackoverflow.com/questions/43813386/how-to-play-a-custom-sound-in-flutter
     *** https://pub.dev/packages/audioplayers
       **** https://github.com/bluefireteam/audioplayers

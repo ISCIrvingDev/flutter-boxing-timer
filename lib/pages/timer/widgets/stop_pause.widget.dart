@@ -53,6 +53,7 @@ class StopPauseWidget extends StatelessWidget {
             size: 22,
           ),
           onPressed: () {
+            timerViewModel.reset();
             Navigator.pop(context);
           },
         ),

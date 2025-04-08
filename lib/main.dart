@@ -42,7 +42,22 @@ void main() {
         // * ViewModels
         // ChangeNotifierProvider(create: (_) => ExampleViewModel()), // Ejemplo de modulo basico
         ChangeNotifierProvider(create: (_) => UserViewModel()),
-        ChangeNotifierProvider(create: (_) => RoundTimerViewModel()),
+
+        // ChangeNotifierProvider(create: (_) => RoundTimerViewModel()), // Inyeccion del ViewModel "RoundTimerViewModel"
+        ChangeNotifierProxyProvider<
+          // Inyeccion del ViewModel "RoundTimerViewModel" con el "AppPlayerService" por medio de "IAppPlayerRepository"
+          IAppPlayerRepository,
+          RoundTimerViewModel
+        >(
+          create:
+              (context) => RoundTimerViewModel(
+                appPlayerService: context.read<IAppPlayerRepository>(),
+              ),
+          update:
+              (context, appPlayerService, previous) =>
+                  RoundTimerViewModel(appPlayerService: appPlayerService),
+        ),
+
         // ChangeNotifierProvider(create: (_) => RoundNoticeTimerViewModel()), // Inyeccion del ViewModel "RoundNoticeTimerViewModel"
         ChangeNotifierProxyProvider<
           // Inyeccion del ViewModel "RoundNoticeTimerViewModel" con el "AppPlayerService" por medio de "IAppPlayerRepository"

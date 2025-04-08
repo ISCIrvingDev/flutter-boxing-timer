@@ -15,15 +15,16 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
     implements ITimerRepository {
   final IAppPlayerRepository appPlayerService;
 
-  RoundNoticeTimerViewModel({required this.appPlayerService});
-
   TimerModel _timerModel = TimerModel(
     seconds: 0,
     minutes: 0,
-    digitSeconds: '00',
-    digitMinutes: '00',
+    digitSeconds: '',
+    digitMinutes: '',
   );
+
   bool _started = false;
+  bool isCompleted = false;
+
   Timer? _timer;
 
   @override
@@ -31,6 +32,8 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
 
   @override
   bool get started => _started;
+
+  RoundNoticeTimerViewModel({required this.appPlayerService});
 
   @override
   void setTimerModel(TimerModel newVal) {
@@ -60,6 +63,7 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
     _timer!.cancel();
 
     _started = false;
+    isCompleted = true;
 
     notifyListeners();
   }
@@ -71,9 +75,7 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       int localSeconds = _timerModel.seconds - 1;
 
-      if (localSeconds > 59) {
-        localSeconds = 0;
-      } else if (localSeconds < 1) {
+      if (localSeconds < 1) {
         appPlayerService.play();
         stop();
       }

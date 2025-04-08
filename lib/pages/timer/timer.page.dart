@@ -35,10 +35,12 @@ class _TimerPageState extends State<TimerPage> {
   late Map arguments;
   // late DurationFormatsUtil durationFormatsUtil;
   late CurrentTimerDto timerDto;
-  late RoundTimerViewModel roundTimerViewModel =
-      Provider.of<RoundTimerViewModel>(context);
+  // late RoundTimerViewModel roundTimerViewModel =
+  //     Provider.of<RoundTimerViewModel>(context);
   // late RoundNoticeTimerViewModel roundNoticeTimer =
   //     Provider.of<RoundNoticeTimerViewModel>(context);
+
+  int roundTimerViewModelCounter = 0;
 
   @override
   void initState() {
@@ -61,27 +63,32 @@ class _TimerPageState extends State<TimerPage> {
         digitMinutes: '00',
       );
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        RoundNoticeTimerViewModel roundNoticeTimer =
-            Provider.of<RoundNoticeTimerViewModel>(context, listen: false);
-
-        roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
-        roundNoticeTimer.start();
-      });
-
       // Round Timer
       int localSeconds = int.tryParse(timerDto.roundTime.substring(3, 5)) ?? 0;
       int localMinutes = int.tryParse(timerDto.roundTime.substring(0, 2)) ?? 0;
 
-      var roundTimerModel = TimerModel(
+      TimerModel roundTimerModel = TimerModel(
         seconds: localSeconds,
         minutes: localMinutes,
         digitSeconds: localSeconds.toString().padLeft(2, '0'),
         digitMinutes: localMinutes.toString().padLeft(2, '0'),
       );
 
-      roundTimerViewModel.setTimerModel(roundTimerModel);
-      roundTimerViewModel.start();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        // Round Notice Timer
+        RoundNoticeTimerViewModel roundNoticeTimer =
+            Provider.of<RoundNoticeTimerViewModel>(context, listen: false);
+
+        roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
+        roundNoticeTimer.start();
+
+        // Round Timer
+        Provider.of<RoundTimerViewModel>(
+          context,
+          listen: false,
+        ).setTimerModel(roundTimerModel);
+      });
+      // roundTimerViewModel.start();
     });
 
     super.initState();
@@ -90,10 +97,30 @@ class _TimerPageState extends State<TimerPage> {
   @override
   Widget build(BuildContext context) {
     // Se usa "watch()" para que la UI se reconstruya al notificar cambios ya que el "Provider.of<RoundNoticeTimerViewModel>" esta con "listen: false"
-    final roundNoticeTimer = context.watch<RoundNoticeTimerViewModel>();
+    final roundNoticeTimerViewModel =
+        context.watch<RoundNoticeTimerViewModel>();
+    final roundTimerViewModel = context.watch<RoundTimerViewModel>();
 
-    ITimerRepository timerViewModel =
-        roundTimerViewModel.started ? roundTimerViewModel : roundNoticeTimer;
+    // ITimerRepository timerViewModel =
+    //     roundNoticeTimerViewModel.isCompleted
+    //         ? () => {
+    //           roundTimerViewModelCounter++;
+
+    //           return roundTimerViewModel;
+    //         }()
+    //         : roundNoticeTimerViewModel;
+
+    ITimerRepository timerViewModel;
+
+    if (roundNoticeTimerViewModel.isCompleted) {
+      roundTimerViewModelCounter++;
+
+      timerViewModel = roundTimerViewModel;
+
+      if (roundTimerViewModelCounter == 1) timerViewModel.start();
+    } else {
+      timerViewModel = roundNoticeTimerViewModel;
+    }
 
     return Scaffold(
       appBar: AppBar(
@@ -137,7 +164,10 @@ class _TimerPageState extends State<TimerPage> {
                 ),
                 child: CurrentTimeWidget(
                   // currentTime: timerViewModel.timerModel.currentTime,
-                  currentTime: '${timerViewModel.timerModel.digitSeconds}s',
+                  currentTime:
+                      roundNoticeTimerViewModel.isCompleted
+                          ? '${timerViewModel.timerModel.digitMinutes}:${timerViewModel.timerModel.digitSeconds}'
+                          : '${timerViewModel.timerModel.digitSeconds}s',
                 ),
               ),
               SizedBox(height: 40),
