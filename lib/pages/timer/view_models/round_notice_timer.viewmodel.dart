@@ -20,6 +20,8 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
     minutes: 0,
     digitSeconds: '',
     digitMinutes: '',
+    currentRound: 0,
+    digitCurrentRound: '',
   );
 
   bool _started = false;
@@ -51,6 +53,8 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
       minutes: 0,
       digitSeconds: '00',
       digitMinutes: '00',
+      currentRound: 0,
+      digitCurrentRound: '',
     );
 
     _started = false;
@@ -87,6 +91,11 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
         minutes: 0,
         digitSeconds: localSeconds >= 10 ? '$localSeconds' : '0$localSeconds',
         digitMinutes: '00',
+        currentRound: _timerModel.currentRound,
+        digitCurrentRound:
+            _timerModel.currentRound >= 10
+                ? '${_timerModel.currentRound}'
+                : '0${_timerModel.currentRound}',
       );
 
       notifyListeners();

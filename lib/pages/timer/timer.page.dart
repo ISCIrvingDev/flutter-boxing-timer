@@ -33,19 +33,16 @@ class TimerPage extends StatefulWidget {
 }
 
 class _TimerPageState extends State<TimerPage> {
-  late Map arguments;
-  late CurrentTimerDto timerDto;
-
   int roundTimerViewModelCounter = 0, breakTimerViewModelCounter = 0;
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      arguments =
+      Map arguments =
           (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{})
               as Map;
 
-      timerDto = arguments['timerDto'];
+      CurrentTimerDto timerDto = arguments['timerDto'];
 
       // Round Notice Timer
       int roundNoticeTimerSeconds =
@@ -56,6 +53,8 @@ class _TimerPageState extends State<TimerPage> {
         minutes: 0,
         digitSeconds: roundNoticeTimerSeconds.toString().padLeft(2, '0'),
         digitMinutes: '00',
+        currentRound: 1,
+        digitCurrentRound: '01',
       );
 
       RoundNoticeTimerViewModel roundNoticeTimer =
@@ -75,6 +74,8 @@ class _TimerPageState extends State<TimerPage> {
         minutes: roundTimerMinutes,
         digitSeconds: roundTimerSeconds.toString().padLeft(2, '0'),
         digitMinutes: roundTimerMinutes.toString().padLeft(2, '0'),
+        currentRound: 1,
+        digitCurrentRound: '01',
       );
 
       Provider.of<RoundTimerViewModel>(
@@ -93,6 +94,8 @@ class _TimerPageState extends State<TimerPage> {
         minutes: breakTimerMinutes,
         digitSeconds: breakTimerSeconds.toString().padLeft(2, '0'),
         digitMinutes: breakTimerMinutes.toString().padLeft(2, '0'),
+        currentRound: 1,
+        digitCurrentRound: '01',
       );
 
       Provider.of<BreakTimerViewModel>(
@@ -106,6 +109,12 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Map arguments =
+        (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{})
+            as Map;
+
+    final CurrentTimerDto timerDto = arguments['timerDto'];
+
     // Se usa "watch()" para que la UI se reconstruya al notificar cambios ya que el "Provider.of<RoundNoticeTimerViewModel>" esta con "listen: false", lo mismo con "RoundTimerViewModel" y "BreakTimerViewModel"
     final roundNoticeTimerViewModel =
         context.watch<RoundNoticeTimerViewModel>();
@@ -145,19 +154,15 @@ class _TimerPageState extends State<TimerPage> {
             children: [
               // Titulo
               CurrentRoundWidget(
-                // currentRound: timerViewModel.timerModel.currentRound,
-                currentRound: 6,
+                currentRound: timerViewModel.timerModel.currentRound,
               ),
               SizedBox(height: 20),
 
               // # de rounds
               TotalRoundsWidget(
-                // totalRounds: timerViewModel.timerModel.totalRounds,
-                // roundMinutes: timerViewModel.timerModel.roundTime,
-                // breakMinutes: timerViewModel.timerModel.breakTime,
-                totalRounds: 12, // timerDto.totalRounds,
-                roundMinutes: '04:00', //timerDto.roundTime,
-                breakMinutes: '00:50', //timerDto.breakTime,
+                totalRounds: timerDto.totalRounds,
+                roundMinutes: timerDto.roundTime,
+                breakMinutes: timerDto.breakTime,
               ),
               SizedBox(height: 40),
 
