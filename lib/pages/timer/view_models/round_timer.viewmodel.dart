@@ -22,6 +22,7 @@ class RoundTimerViewModel extends ChangeNotifier implements ITimerRepository {
   );
 
   bool _started = false;
+  bool isCompleted = false;
 
   Timer? _timer;
 
@@ -77,7 +78,10 @@ class RoundTimerViewModel extends ChangeNotifier implements ITimerRepository {
         localSeconds = 59;
       } else if (localMinutes < 1 && localSeconds < 1) {
         appPlayerService.play();
+
         stop();
+
+        isCompleted = true;
       }
 
       _timerModel = TimerModel(

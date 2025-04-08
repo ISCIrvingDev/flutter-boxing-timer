@@ -13,7 +13,8 @@ import 'view_models/timer.repository.dart';
 import 'package:provider/provider.dart';
 import 'timer.models.dart';
 import 'view_models/round_timer.viewmodel.dart';
-import 'package:flutter_boxing_timer/pages/timer/view_models/round_notice_timer.viewmodel.dart';
+import 'view_models/round_notice_timer.viewmodel.dart';
+import 'view_models/break_timer.viewmodel.dart';
 
 // * Widgets
 import 'widgets/current_round.widget.dart';
@@ -33,62 +34,71 @@ class TimerPage extends StatefulWidget {
 
 class _TimerPageState extends State<TimerPage> {
   late Map arguments;
-  // late DurationFormatsUtil durationFormatsUtil;
   late CurrentTimerDto timerDto;
-  // late RoundTimerViewModel roundTimerViewModel =
-  //     Provider.of<RoundTimerViewModel>(context);
-  // late RoundNoticeTimerViewModel roundNoticeTimer =
-  //     Provider.of<RoundNoticeTimerViewModel>(context);
 
-  int roundTimerViewModelCounter = 0;
+  int roundTimerViewModelCounter = 0, breakTimerViewModelCounter = 0;
 
   @override
   void initState() {
-    Future.microtask(() async {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       arguments =
-          // ignore: use_build_context_synchronously
           (ModalRoute.of(context)?.settings.arguments ?? <String, dynamic>{})
               as Map;
 
       timerDto = arguments['timerDto'];
 
       // Round Notice Timer
-      int roundNoticeTimerLocalSeconds =
+      int roundNoticeTimerSeconds =
           int.tryParse(timerDto.roundNoticeTime.substring(0, 2)) ?? 0;
 
       var roundNoticeTimerModel = TimerModel(
-        seconds: roundNoticeTimerLocalSeconds,
+        seconds: roundNoticeTimerSeconds,
         minutes: 0,
-        digitSeconds: roundNoticeTimerLocalSeconds.toString().padLeft(2, '0'),
+        digitSeconds: roundNoticeTimerSeconds.toString().padLeft(2, '0'),
         digitMinutes: '00',
       );
 
+      RoundNoticeTimerViewModel roundNoticeTimer =
+          Provider.of<RoundNoticeTimerViewModel>(context, listen: false);
+
+      roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
+      roundNoticeTimer.start();
+
       // Round Timer
-      int localSeconds = int.tryParse(timerDto.roundTime.substring(3, 5)) ?? 0;
-      int localMinutes = int.tryParse(timerDto.roundTime.substring(0, 2)) ?? 0;
+      int roundTimerSeconds =
+          int.tryParse(timerDto.roundTime.substring(3, 5)) ?? 0;
+      int roundTimerMinutes =
+          int.tryParse(timerDto.roundTime.substring(0, 2)) ?? 0;
 
       TimerModel roundTimerModel = TimerModel(
-        seconds: localSeconds,
-        minutes: localMinutes,
-        digitSeconds: localSeconds.toString().padLeft(2, '0'),
-        digitMinutes: localMinutes.toString().padLeft(2, '0'),
+        seconds: roundTimerSeconds,
+        minutes: roundTimerMinutes,
+        digitSeconds: roundTimerSeconds.toString().padLeft(2, '0'),
+        digitMinutes: roundTimerMinutes.toString().padLeft(2, '0'),
       );
 
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        // Round Notice Timer
-        RoundNoticeTimerViewModel roundNoticeTimer =
-            Provider.of<RoundNoticeTimerViewModel>(context, listen: false);
+      Provider.of<RoundTimerViewModel>(
+        context,
+        listen: false,
+      ).setTimerModel(roundTimerModel);
 
-        roundNoticeTimer.setTimerModel(roundNoticeTimerModel);
-        roundNoticeTimer.start();
+      // Break Timer
+      int breakTimerSeconds =
+          int.tryParse(timerDto.breakTime.substring(3, 5)) ?? 0;
+      int breakTimerMinutes =
+          int.tryParse(timerDto.breakTime.substring(0, 2)) ?? 0;
 
-        // Round Timer
-        Provider.of<RoundTimerViewModel>(
-          context,
-          listen: false,
-        ).setTimerModel(roundTimerModel);
-      });
-      // roundTimerViewModel.start();
+      TimerModel breakTimerModel = TimerModel(
+        seconds: breakTimerSeconds,
+        minutes: breakTimerMinutes,
+        digitSeconds: breakTimerSeconds.toString().padLeft(2, '0'),
+        digitMinutes: breakTimerMinutes.toString().padLeft(2, '0'),
+      );
+
+      Provider.of<BreakTimerViewModel>(
+        context,
+        listen: false,
+      ).setTimerModel(breakTimerModel);
     });
 
     super.initState();
@@ -96,28 +106,27 @@ class _TimerPageState extends State<TimerPage> {
 
   @override
   Widget build(BuildContext context) {
-    // Se usa "watch()" para que la UI se reconstruya al notificar cambios ya que el "Provider.of<RoundNoticeTimerViewModel>" esta con "listen: false"
+    // Se usa "watch()" para que la UI se reconstruya al notificar cambios ya que el "Provider.of<RoundNoticeTimerViewModel>" esta con "listen: false", lo mismo con "RoundTimerViewModel" y "BreakTimerViewModel"
     final roundNoticeTimerViewModel =
         context.watch<RoundNoticeTimerViewModel>();
     final roundTimerViewModel = context.watch<RoundTimerViewModel>();
-
-    // ITimerRepository timerViewModel =
-    //     roundNoticeTimerViewModel.isCompleted
-    //         ? () => {
-    //           roundTimerViewModelCounter++;
-
-    //           return roundTimerViewModel;
-    //         }()
-    //         : roundNoticeTimerViewModel;
+    final breakTimerViewModel = context.watch<BreakTimerViewModel>();
 
     ITimerRepository timerViewModel;
 
-    if (roundNoticeTimerViewModel.isCompleted) {
+    if (roundNoticeTimerViewModel.isCompleted &&
+        !roundTimerViewModel.isCompleted) {
       roundTimerViewModelCounter++;
 
       timerViewModel = roundTimerViewModel;
 
       if (roundTimerViewModelCounter == 1) timerViewModel.start();
+    } else if (roundTimerViewModel.isCompleted) {
+      breakTimerViewModelCounter++;
+
+      timerViewModel = breakTimerViewModel;
+
+      if (breakTimerViewModelCounter == 1) timerViewModel.start();
     } else {
       timerViewModel = roundNoticeTimerViewModel;
     }

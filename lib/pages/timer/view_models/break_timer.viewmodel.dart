@@ -11,8 +11,7 @@ import 'package:flutter_boxing_timer/shared/services/player/player.repository.da
 // * Models
 import '../timer.models.dart';
 
-class RoundNoticeTimerViewModel extends ChangeNotifier
-    implements ITimerRepository {
+class BreakTimerViewModel extends ChangeNotifier implements ITimerRepository {
   final IAppPlayerRepository appPlayerService;
 
   TimerModel _timerModel = TimerModel(
@@ -23,7 +22,6 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
   );
 
   bool _started = false;
-  bool isCompleted = false;
 
   Timer? _timer;
 
@@ -33,7 +31,7 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
   @override
   bool get started => _started;
 
-  RoundNoticeTimerViewModel({required this.appPlayerService});
+  BreakTimerViewModel({required this.appPlayerService});
 
   @override
   void setTimerModel(TimerModel newVal) {
@@ -52,7 +50,6 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
       digitSeconds: '00',
       digitMinutes: '00',
     );
-
     _started = false;
 
     notifyListeners();
@@ -73,20 +70,21 @@ class RoundNoticeTimerViewModel extends ChangeNotifier
 
     _timer = Timer.periodic(Duration(seconds: 1), (timer) {
       int localSeconds = _timerModel.seconds - 1;
+      int localMinutes = _timerModel.minutes;
 
-      if (localSeconds < 1) {
+      if (localMinutes > 0 && localSeconds < 1) {
+        localMinutes--;
+        localSeconds = 59;
+      } else if (localMinutes < 1 && localSeconds < 1) {
         appPlayerService.play();
-
         stop();
-
-        isCompleted = true;
       }
 
       _timerModel = TimerModel(
         seconds: localSeconds,
-        minutes: 0,
+        minutes: localMinutes,
         digitSeconds: localSeconds >= 10 ? '$localSeconds' : '0$localSeconds',
-        digitMinutes: '00',
+        digitMinutes: localMinutes >= 10 ? '$localMinutes' : '0$localMinutes',
       );
 
       notifyListeners();

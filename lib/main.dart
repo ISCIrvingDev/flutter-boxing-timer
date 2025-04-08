@@ -25,6 +25,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_boxing_timer/pages/home/tabs/current_timer/current_timer.viewmodels.dart';
 import 'package:flutter_boxing_timer/pages/timer/view_models/round_timer.viewmodel.dart';
 import 'package:flutter_boxing_timer/pages/timer/view_models/round_notice_timer.viewmodel.dart';
+import 'package:flutter_boxing_timer/pages/timer/view_models/break_timer.viewmodel.dart';
 
 void main() {
   // runApp(const MyApp());
@@ -71,6 +72,20 @@ void main() {
           update:
               (context, appPlayerService, previous) =>
                   RoundNoticeTimerViewModel(appPlayerService: appPlayerService),
+        ),
+
+        ChangeNotifierProxyProvider<
+          // Inyeccion del ViewModel "BreakTimerViewModel" con el "AppPlayerService" por medio de "IAppPlayerRepository"
+          IAppPlayerRepository,
+          BreakTimerViewModel
+        >(
+          create:
+              (context) => BreakTimerViewModel(
+                appPlayerService: context.read<IAppPlayerRepository>(),
+              ),
+          update:
+              (context, appPlayerService, previous) =>
+                  BreakTimerViewModel(appPlayerService: appPlayerService),
         ),
       ],
       child: const MyApp(),

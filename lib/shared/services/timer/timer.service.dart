@@ -17,9 +17,11 @@ class AppTimerService implements IAppTimerRepository {
     // data != null CurrentTimerDto.fromJson(data)
 
     // var res = prefs.get('currentTimer') ?? CurrentTimerDto(roundTime: '03:00');
+    var currentTimer = prefs.get('currentTimer');
+
     var res =
-        prefs.get('currentTimer') != null
-            ? prefs.get('currentTimer') as CurrentTimerDto
+        currentTimer != null
+            ? currentTimer as CurrentTimerDto
             : defaultCurrentTimerDto;
 
     return res;
