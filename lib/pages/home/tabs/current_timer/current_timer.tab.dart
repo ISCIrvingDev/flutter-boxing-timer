@@ -73,11 +73,17 @@ class _CurrentTimerTabState extends State<CurrentTimerTab> {
             ),
             child: Column(
               children: [
-                RoundNoticeWidget(roundTime: '03:00', roundNoticeTime: '15s'),
+                RoundNoticeWidget(
+                  roundTime: timerDto.roundTime,
+                  roundNoticeTime: timerDto.roundNoticeTime,
+                ),
                 SizedBox(height: 20),
                 Divider(),
                 SizedBox(height: 20),
-                BreakNoticeWidget(breakTime: '03:00', breakNoticeTime: '15s'),
+                BreakNoticeWidget(
+                  breakTime: timerDto.breakTime,
+                  breakNoticeTime: timerDto.breakNoticeTime,
+                ),
               ],
             ),
           ),
