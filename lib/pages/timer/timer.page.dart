@@ -123,20 +123,79 @@ class _TimerPageState extends State<TimerPage> {
 
     ITimerRepository timerViewModel;
 
+    /*
+    * Resetear los valores de "roundNoticeTimerViewModel", "roundTimerViewModel" y de "breakTimerViewModel" para que vuelva a empezar el ciclo hasta que timerViewModel.timerModel.currentRound == timerDto.totalRounds
+    */
+
     if (roundNoticeTimerViewModel.isCompleted &&
         !roundTimerViewModel.isCompleted) {
+      // Este repite las mismas veces que el numero de rounds
       roundTimerViewModelCounter++;
 
       timerViewModel = roundTimerViewModel;
 
       if (roundTimerViewModelCounter == 1) timerViewModel.start();
     } else if (roundTimerViewModel.isCompleted) {
+      // Este repite las mismas veces que el numero de rounds - 1
       breakTimerViewModelCounter++;
 
       timerViewModel = breakTimerViewModel;
 
-      if (breakTimerViewModelCounter == 1) timerViewModel.start();
+      if (breakTimerViewModelCounter == 1) {
+        timerViewModel.start();
+      }
+
+      if (timerViewModel.timerModel.minutes == 0 &&
+          timerViewModel.timerModel.seconds == 0 &&
+          timerViewModel.timerModel.currentRound <= timerDto.totalRounds) {
+        roundTimerViewModelCounter = 1;
+        breakTimerViewModelCounter = 0;
+        roundTimerViewModel.isCompleted = false;
+
+        // Resetear valores de los Timers - Inicio
+        // Round Timer
+        int roundTimerSeconds =
+            int.tryParse(timerDto.roundTime.substring(3, 5)) ?? 0;
+        int roundTimerMinutes =
+            int.tryParse(timerDto.roundTime.substring(0, 2)) ?? 0;
+
+        TimerModel roundTimerModel = TimerModel(
+          seconds: roundTimerSeconds,
+          minutes: roundTimerMinutes,
+          digitSeconds: roundTimerSeconds.toString().padLeft(2, '0'),
+          digitMinutes: roundTimerMinutes.toString().padLeft(2, '0'),
+          currentRound: timerViewModel.timerModel.currentRound,
+          digitCurrentRound: '01',
+        );
+
+        roundTimerViewModel.setTimerModel(roundTimerModel);
+
+        if (timerViewModel.timerModel.currentRound != timerDto.totalRounds) {
+          // Break Timer
+          int breakTimerSeconds =
+              int.tryParse(timerDto.breakTime.substring(3, 5)) ?? 0;
+          int breakTimerMinutes =
+              int.tryParse(timerDto.breakTime.substring(0, 2)) ?? 0;
+
+          TimerModel breakTimerModel = TimerModel(
+            seconds: breakTimerSeconds,
+            minutes: breakTimerMinutes,
+            digitSeconds: breakTimerSeconds.toString().padLeft(2, '0'),
+            digitMinutes: breakTimerMinutes.toString().padLeft(2, '0'),
+            currentRound: timerViewModel.timerModel.currentRound,
+            digitCurrentRound: '01',
+          );
+
+          breakTimerViewModel.setTimerModel(breakTimerModel);
+        }
+        // Resetear valores de los Timers - Fin
+
+        timerViewModel = roundTimerViewModel;
+
+        timerViewModel.start();
+      }
     } else {
+      // Este solamente se debe activar la primera vez
       timerViewModel = roundNoticeTimerViewModel;
     }
 

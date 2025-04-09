@@ -39,7 +39,7 @@ class BreakTimerViewModel extends ChangeNotifier implements ITimerRepository {
   void setTimerModel(TimerModel newVal) {
     _timerModel = newVal;
 
-    notifyListeners();
+    // notifyListeners();
   }
 
   @override
