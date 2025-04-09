@@ -123,10 +123,6 @@ class _TimerPageState extends State<TimerPage> {
 
     ITimerRepository timerViewModel;
 
-    /*
-    * Resetear los valores de "roundNoticeTimerViewModel", "roundTimerViewModel" y de "breakTimerViewModel" para que vuelva a empezar el ciclo hasta que timerViewModel.timerModel.currentRound == timerDto.totalRounds
-    */
-
     if (roundNoticeTimerViewModel.isCompleted &&
         !roundTimerViewModel.isCompleted) {
       // Este repite las mismas veces que el numero de rounds
@@ -135,7 +131,8 @@ class _TimerPageState extends State<TimerPage> {
       timerViewModel = roundTimerViewModel;
 
       if (roundTimerViewModelCounter == 1) timerViewModel.start();
-    } else if (roundTimerViewModel.isCompleted) {
+    } else if (roundTimerViewModel.isCompleted &&
+        roundTimerViewModel.timerModel.currentRound != timerDto.totalRounds) {
       // Este repite las mismas veces que el numero de rounds - 1
       breakTimerViewModelCounter++;
 
@@ -145,6 +142,7 @@ class _TimerPageState extends State<TimerPage> {
         timerViewModel.start();
       }
 
+      // Aqui se debe entrar desde que se termina el primer round para volver a empezar el ciclo
       if (timerViewModel.timerModel.minutes == 0 &&
           timerViewModel.timerModel.seconds == 0 &&
           timerViewModel.timerModel.currentRound <= timerDto.totalRounds) {
@@ -152,7 +150,7 @@ class _TimerPageState extends State<TimerPage> {
         breakTimerViewModelCounter = 0;
         roundTimerViewModel.isCompleted = false;
 
-        // Resetear valores de los Timers - Inicio
+        // Resetear valores de los Timers - Inicio --------------------------------------------
         // Round Timer
         int roundTimerSeconds =
             int.tryParse(timerDto.roundTime.substring(3, 5)) ?? 0;
@@ -165,7 +163,10 @@ class _TimerPageState extends State<TimerPage> {
           digitSeconds: roundTimerSeconds.toString().padLeft(2, '0'),
           digitMinutes: roundTimerMinutes.toString().padLeft(2, '0'),
           currentRound: timerViewModel.timerModel.currentRound,
-          digitCurrentRound: '01',
+          digitCurrentRound:
+              timerViewModel.timerModel.currentRound >= 10
+                  ? '${timerViewModel.timerModel.currentRound}'
+                  : '0${timerViewModel.timerModel.currentRound}',
         );
 
         roundTimerViewModel.setTimerModel(roundTimerModel);
@@ -183,20 +184,26 @@ class _TimerPageState extends State<TimerPage> {
             digitSeconds: breakTimerSeconds.toString().padLeft(2, '0'),
             digitMinutes: breakTimerMinutes.toString().padLeft(2, '0'),
             currentRound: timerViewModel.timerModel.currentRound,
-            digitCurrentRound: '01',
+            digitCurrentRound:
+                timerViewModel.timerModel.currentRound >= 10
+                    ? '${timerViewModel.timerModel.currentRound}'
+                    : '0${timerViewModel.timerModel.currentRound}',
           );
 
           breakTimerViewModel.setTimerModel(breakTimerModel);
         }
-        // Resetear valores de los Timers - Fin
+        // Resetear valores de los Timers - Fin --------------------------------------------
 
         timerViewModel = roundTimerViewModel;
 
         timerViewModel.start();
       }
     } else {
-      // Este solamente se debe activar la primera vez
-      timerViewModel = roundNoticeTimerViewModel;
+      // "timerViewModel" solamente debe ser "roundNoticeTimerViewModel" la primera vez (cuando inicia el timer por primera vez)
+      timerViewModel =
+          roundTimerViewModel.timerModel.currentRound == timerDto.totalRounds
+              ? roundTimerViewModel
+              : roundNoticeTimerViewModel;
     }
 
     return Scaffold(
