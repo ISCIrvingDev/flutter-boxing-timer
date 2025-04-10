@@ -44,6 +44,7 @@ final ThemeData appDarkTheme = ThemeData.dark(useMaterial3: true).copyWith(
       backgroundColor: Color(0XFFfc2e36), // Color del botón
       foregroundColor: Color(0XFFfefcfb), // Color del texto del botón
       textStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
     ),
   ),
   floatingActionButtonTheme: FloatingActionButtonThemeData(
