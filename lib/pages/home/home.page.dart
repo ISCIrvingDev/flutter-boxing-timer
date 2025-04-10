@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 // * Tabs
 import 'tabs/current_timer/current_timer.tab.dart';
+import 'package:flutter_boxing_timer/pages/home/timers/timers.tab.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.title});
@@ -31,10 +32,7 @@ class _HomePageState extends State<HomePage> {
         child: TabBarView(
           children: [
             CurrentTimerTab(),
-            Container(
-              color: Colors.redAccent,
-              child: const Icon(Icons.more_time_rounded),
-            ),
+            TimersTab(),
             Container(
               color: Colors.orangeAccent,
               child: const Icon(Icons.settings_outlined),
